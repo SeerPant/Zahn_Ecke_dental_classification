@@ -25,12 +25,14 @@ export const registerUser = async (userData) => {
       email,
       password: hashedPassword,
       name: name || null,
+      role: userData.role || "USER",
     },
     select: {
       id: true,
       email: true,
       name: true,
       createdAt: true,
+      role: true,
     },
   });
 
@@ -38,6 +40,7 @@ export const registerUser = async (userData) => {
   const token = generateToken({
     id: user.id,
     email: user.email,
+    role: user.role,
   });
 
   return { user, token };
@@ -84,6 +87,7 @@ export const getUserById = async (userId) => {
       id: true,
       email: true,
       name: true,
+      role: true,
       createdAt: true,
       updatedAt: true,
     },
