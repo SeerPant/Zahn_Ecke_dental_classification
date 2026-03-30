@@ -1,6 +1,8 @@
 import express from "express";
 import authRoutes from "./auth/index.js";
 import userRoutes from "./user/index.js";
+import predictRoutes from "./predict/index.js";
+import adminRoutes from "./admin/index.js";
 
 const router = express.Router();
 //health check
@@ -16,5 +18,11 @@ router.use("/auth", authRoutes);
 
 //user routes
 router.use("/user", userRoutes);
+
+//prediction roujte
+router.use("/predict", predictRoutes);
+
+//admin routes
+router.use("/admin", adminRoutes);
 
 export default router;

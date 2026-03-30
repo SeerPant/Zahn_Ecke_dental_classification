@@ -9,14 +9,22 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
+    origin: "*",
+  }),
 );
 
 app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api", routes);
+
+//global error handling
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || "Internal server error",
+  });
+});
 
 export default app;

@@ -60,6 +60,20 @@ export const loginUser = async (credentials) => {
     throw error;
   }
 
+  //block soft-deleted users
+  if (user.isDeleted) {
+    const error = new Error("This account has been removed");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  //block banned users
+  if (user.isBanned) {
+    const error = new Error("Your account has been banned");
+    error.statusCode = 403;
+    throw error;
+  }
+
   //verifying password
   const isPasswordValid = await comparePassword(password, user.password);
 
@@ -72,9 +86,10 @@ export const loginUser = async (credentials) => {
   const token = generateToken({
     id: user.id,
     email: user.email,
+    role: user.role,
   });
 
-  //removing password from response
+  // removing password from response
   const { password: _, ...userWithoutPassword } = user;
 
   return { user: userWithoutPassword, token };

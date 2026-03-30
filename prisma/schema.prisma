@@ -6,21 +6,35 @@ datasource db {
   provider = "postgresql"
 }
 
-
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
   name      String?
   role      Role     @default(USER)
+  isBanned  Boolean  @default(false)
+  isDeleted Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  dentalReports DentalReport[]
 
   @@map("users")
 }
 
-
-enum Role{
+enum Role {
   USER
-  ADMIN 
+  ADMIN
+}
+
+model DentalReport {
+  id             Int      @id @default(autoincrement())
+  userId         String
+  condition      String
+  confidence     Float
+  recommendation String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("dental_reports")
 }
