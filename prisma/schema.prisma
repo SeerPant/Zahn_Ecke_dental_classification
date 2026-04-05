@@ -38,3 +38,13 @@ model DentalReport {
 
   @@map("dental_reports")
 }
+
+model OtpToken {
+  id        String   @id @default(uuid())
+  email     String
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("otp_tokens")
+}
