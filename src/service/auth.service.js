@@ -21,8 +21,7 @@ const generateOtp = () =>
   Math.floor(100000 + Math.random() * 900000).toString();
 
 //hashes OTP before storing
-const hashOtp = (otp) =>
-  crypto.createHash("sha256").update(otp).digest("hex");
+const hashOtp = (otp) => crypto.createHash("sha256").update(otp).digest("hex");
 
 export const initiateRegistration = async (userData) => {
   const { email, password, name } = userData;
@@ -75,7 +74,9 @@ export const verifyOtpAndRegister = async ({ email, otp, password, name }) => {
   });
 
   if (!otpRecord) {
-    const error = new Error("No OTP found for this email. Please register again.");
+    const error = new Error(
+      "No OTP found for this email. Please register again.",
+    );
     error.statusCode = 400;
     throw error;
   }
